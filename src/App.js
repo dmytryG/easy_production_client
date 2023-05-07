@@ -1,25 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import {
+    BrowserRouter, redirect,
+    Route,
+    Routes, useLocation, useNavigate
+} from "react-router-dom";
+import Header from "./Components/Header";
+import Footer from "./Components/Footer";
+import Login from "./Pages/Login";
+import Home from "./Pages/Home";
+import {useEffect} from "react";
+import CheckAuthorization from "./Services/CheckAuthorization";
+
+const allow_anonymous = ["/login", "/register"]
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const navigate = useNavigate();
+    const location = useLocation();
+    useEffect(() => {
+        const state = CheckAuthorization();
+        if(!state && !allow_anonymous.includes(location.pathname)) {
+            console.log("Unauthorized, redirecting to login");
+            navigate("/login")
+        }
+    }, [location.key]);
+
+
+    return (
+        <div>
+            <Header/>
+            <Routes>
+                <Route path="/" element={<Home/>} onEnter={() => console.log("Home")}/>
+                <Route path="/login" element={<Login/>}/>
+            </Routes>
+            <Footer/>
+        </div>
+    );
 }
 
 export default App;
