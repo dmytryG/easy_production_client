@@ -10,6 +10,7 @@ import Login from "./Pages/Login";
 import Home from "./Pages/Home";
 import {useEffect} from "react";
 import CheckAuthorization from "./Services/CheckAuthorization";
+import Register from "./Pages/Register";
 
 const allow_anonymous = ["/login", "/register"]
 
@@ -32,6 +33,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home/>} onEnter={() => console.log("Home")}/>
                 <Route path="/login" element={<Login/>}/>
+                <Route path="/register" element={<Register/>}/>
             </Routes>
             <Footer/>
         </div>
