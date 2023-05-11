@@ -6,4 +6,8 @@ function SaveAuthorization(user, token) {
     console.log(`Saving login ${user.fullName}, ${'JWT ' + token}`)
 }
 
-export default SaveAuthorization;
+function GetAuthorizationToken() {
+    return Cookies.get('Token')
+}
+
+export {SaveAuthorization, GetAuthorizationToken};

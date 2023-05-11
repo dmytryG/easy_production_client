@@ -1,9 +1,9 @@
 import LoginForm from "../Components/LoginForm";
-import SaveAuthorization from "../Services/SaveAuthorization";
 import {formToURLSearchParams} from "../Services/FormConvertor";
 import RegisterForm from "../Components/RegisterForm";
 import LoadingNotification from "../Components/Notifications/LoadingNotification/LoadingNotification";
 import {useState} from "react";
+import {SaveAuthorization} from "../Services/SaveAuthorization";
 
 function Register() {
 

@@ -1,8 +1,8 @@
 import LoginForm from "../Components/LoginForm";
-import SaveAuthorization from "../Services/SaveAuthorization";
 import {formToURLSearchParams} from "../Services/FormConvertor";
 import {useState} from "react";
 import LoadingNotification from "../Components/Notifications/LoadingNotification/LoadingNotification";
+import {SaveAuthorization} from "../Services/SaveAuthorization";
 
 function Login() {
 
