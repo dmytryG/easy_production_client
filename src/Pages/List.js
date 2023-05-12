@@ -64,15 +64,26 @@ function List({...props}) {
         getList(setList, listId).catch(console.error).finally(() => setLoader(false));
     }, []);
 
-    function onItemUpdate({item, value}) {
+    function onItemUpdate({item, value, type, itemName}) {
         const items = list.items.map((iterItem) => {
             if (iterItem._id === item._id) {
-                return {...item, value: value}
+                let new_item = item;
+                if (value !== undefined && iterItem.value !== value) new_item = {...new_item, value: value}
+                if (type  !== undefined && iterItem.type !== type) {
+                    new_item = {...new_item, type: type, value: (type === "checkbox") ? false : ""}
+                }
+                if (itemName !== undefined && iterItem.itemName !== itemName) new_item = {...new_item, itemName: itemName}
+                console.log("Value: ", value, "Type: ", type, "New item: ", new_item, "New type: ", new_item.type)
+                return new_item;
             } else {
                 return iterItem;
             }
         })
         setList({...list, items});
+    }
+
+    function onListNameChanged(event) {
+        setList({...list, listName: event.target.value})
     }
 
     function onSave() {
@@ -86,6 +97,7 @@ function List({...props}) {
             {loader || !list.items
                 ? <LoadingNotification/>
                 : <ChildContainer>
+                    <input type="text" value={list.listName} onChange={onListNameChanged}/>
                     <button onClick={onSave}>Save</button>
                     {
                         list.items.map((item) =>
