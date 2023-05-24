@@ -52,6 +52,28 @@ async function updateList(list) {
     }
 }
 
+async function deleteList(list) {
+    console.log("Updating", list)
+    try {
+        const response = await fetch(`http://127.0.0.1:1234/list/${list._id}`, {
+            method: 'DELETE',
+            mode: 'cors',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': GetAuthorizationToken()
+            },
+        })
+        const response_data = await response.json();
+        if (!response_data.is_err) {
+            console.log(`Successfully updated list`);
+        } else {
+            console.error(`Error while logging in. Reason: ${response_data.data}`)
+        }
+    } catch (e) {
+        console.log(`Err ${e}`);
+    }
+}
+
 function List({...props}) {
     const params = useParams();
     const listId = params.id;
@@ -92,6 +114,11 @@ function List({...props}) {
         updateList(list).catch(console.error).finally(() => setLoader(false));
     }
 
+    function onDelete() {
+        setLoader(true);
+        deleteList(list).catch(console.error).finally(() => setLoader(false));
+    }
+
     return (
         <div>
             {loader || !list.items
@@ -99,6 +126,7 @@ function List({...props}) {
                 : <ChildContainer>
                     <input type="text" value={list.listName} onChange={onListNameChanged}/>
                     <button onClick={onSave}>Save</button>
+                    <button onClick={onDelete}>Delete</button>
                     {
                         list.items.map((item) =>
                             <ListItem item={item} onItemUpdate={onItemUpdate} key={item._id}/>
